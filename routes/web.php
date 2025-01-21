@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+
 
 // Welcome Page
 Route::get('/', function () {
@@ -36,5 +38,11 @@ Route::get('/license-registration', function () {
 
 // Pastor License Registration Submission
 Route::post('/upload-registration', [PastorLicenseController::class, '__invoke'])->name('upload-registration');
+
+Route::get('/run-migration', function () {
+    Artisan::call('optimize-clear');
+    Artisan::call('migrate-fresh --seed');
+    return "Migrations executed successfully";
+});
 
 require __DIR__ . '/auth.php';
